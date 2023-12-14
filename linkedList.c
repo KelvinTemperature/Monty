@@ -56,5 +56,5 @@ void add_to_queue(stack_t **new_node, __attribute__((unused))unsigned int ln)
 	while (temp->next != NULL)
 		temp = temp->next;
 	temp->next = *new_node;
-	(*new_node)->prev = temp
+	(*new_node)->prev = temp;
 }

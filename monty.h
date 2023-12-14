@@ -39,12 +39,32 @@ typedef struct instruction_s
 } instruction_t;
 
 extern stack_t *head;
-typedef void(*op_func)(stack_t **, unsigned int);
+:wtypedef void(*op_func)(stack_t **, unsigned int);
+
+
+/**
+ * arguments_s: contains argument that every function needs
+ * @line: holds current line number;
+ * @len: holds length of stack, such that
+ *		: if len = 0, stack is empty;
+ *		: if len = -1,  stack overflow
+ * @tos: pointer to TOP OF STACK. (ie the second end, opposite of head)
+ */
+typedef struct arguments_s
+{
+	unsigned int line;
+	int len;
+	struct stack_s *tos;
+} args_t;
+
+/* initializes an args_t structure */
+#define INIT_ARGS {0, 0, NULL};
+
 
 /* Linked List Funtions */
 stack_t *make_node(int n);
 void free_all_nodes(void);
-void add_to_queue(stack_t __attribute__((unused))unsigned int);
+void add_to_stack(stack_t **new_node, args_t **args);
 
 /* File Operation Functions */
 void file_open(char *filename);

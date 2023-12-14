@@ -144,7 +144,6 @@ void _exec(op_func func, char *opc, char *val, unsigned int line_n, int format)
 				fprintf(stderr, "L%d: usage: push integer\n", line_n);
 			val++;
 		}
-		printf("the val is: %s\n", val_rep);
 		node = make_node(atoi(val_rep) * flag);
 		if (format == 0)
 			func(&node, line_n);

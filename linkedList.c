@@ -16,7 +16,6 @@ stack_t *make_node(int n)
 	new_node->next = NULL;
 	new_node->prev = NULL;
 	new_node->n = n;
-	printf("NEW NODE: %d\n", n);
 
 	return (new_node);
 }

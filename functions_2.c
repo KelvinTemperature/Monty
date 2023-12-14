@@ -13,7 +13,7 @@ void add(stack_t **node, unsigned int ln)
 
 	if (*node == NULL)
 	{
-		fprintf(stderr, "L%d: can't sub, stack too short", ln);
+		fprintf(stderr, "L%d: can't add, stack too short\n", ln);
 		exit(EXIT_FAILURE);
 	}
 	while (temp->next != NULL)
@@ -21,7 +21,7 @@ void add(stack_t **node, unsigned int ln)
 
 	if (temp->prev == NULL || temp->prev->prev == NULL)
 	{
-		fprintf(stderr, "L%d: can;t sub, stack too short", ln);
+		fprintf(stderr, "L%d: can;t add, stack too short\n", ln);
 		exit(EXIT_FAILURE);
 	}
 
@@ -45,7 +45,7 @@ void sub(stack_t **node, unsigned int ln)
 
 	if (*node == NULL)
 	{
-		fprintf(stderr, "L%d: can't sub, stack too short", ln);
+		fprintf(stderr, "L%d: can't sub, stack too short\n", ln);
 		exit(EXIT_FAILURE);
 	}
 	while (temp->next != NULL)
@@ -53,7 +53,7 @@ void sub(stack_t **node, unsigned int ln)
 
 	if (temp->prev == NULL || temp->prev->prev == NULL)
 	{
-		fprintf(stderr, "L%d: can't sub, stack too short", ln);
+		fprintf(stderr, "L%d: can't sub, stack too short\n", ln);
 		exit(EXIT_FAILURE);
 	}
 

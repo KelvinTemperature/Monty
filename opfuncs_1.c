@@ -65,7 +65,7 @@ void pint(stack_t **node, unsigned int ln)
 
 	if (temp == NULL || !temp->n)
 	{
-		fprintf(stderr, "L%d: can't pint, empty stack\n", ln);
+		fprintf(stderr, "L%d: can't pint, stack empty\n", ln);
 		exit(EXIT_FAILURE);
 	}
 
@@ -85,9 +85,9 @@ void pint(stack_t **node, unsigned int ln)
  */
 void pop(stack_t **node, unsigned int ln)
 {
-	stack_t *temp;
+	stack_t *temp, *store;
 
-	if (*node == NULL)
+	if (head == NULL || node == NULL || *node == NULL || !head->n || !(*node)->n)
 	{
 		fprintf(stderr, "L%d: can't pop an empty stack\n", ln);
 		exit(EXIT_FAILURE);
@@ -98,13 +98,15 @@ void pop(stack_t **node, unsigned int ln)
 	{
 		while (temp->next != NULL)
 			temp = temp->next;
-		temp->prev->next = NULL;
-		free(temp);
+
+		store = temp->prev;
+		store->next = NULL;
 	}
 	else
 	{
-		free(temp);
-		*node = NULL;
+		store = temp->prev;
+		if (store != NULL)
+			store->next = NULL;
 	}
 
 	ln += 1;

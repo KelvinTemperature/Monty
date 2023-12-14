@@ -55,13 +55,14 @@ int tok_line(char *buffer, int line_num, int format)
 
 	if (buffer == NULL)
 	{
-		fprintf(stderr, "Error: malloc failed\n");
 		exit(EXIT_FAILURE);
 	}
 
 	opcode = strtok(buffer, delim);
 	if (opcode == NULL)
-		return (format);
+	{
+ 		return (format);
+	}
 
 	in_val = strtok(NULL, delim);
 
@@ -117,7 +118,10 @@ void match_func(char *opcode, char *value, int line_num, int format)
 		}
 	}
 	if (flag == 1)
+	{
 		fprintf(stderr, "L%d: unknown instruction %s\n", line_num, opcode);
+		exit(EXIT_FAILURE);
+	}
 }
 
 /**

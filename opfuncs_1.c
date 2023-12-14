@@ -25,7 +25,6 @@ void push(stack_t **node, unsigned int ln)
 	while (temp->next != NULL)
 	{
 		temp = temp->next;
-		printf("temp: %d\n", temp->n);
 	}
 	temp->next = *node;
 	(*node)->prev = temp;

@@ -136,12 +136,18 @@ void _exec(op_func func, char *opc, char *val, unsigned int line_n, int format)
 			flag = -1;
 		}
 		if (val == NULL)
+		{
 			fprintf(stderr, "L%d: usage: push integer\n", line_n);
+			exit(EXIT_FAILURE);
+		}
 
 		while (*val != '\0')
 		{
 			if (!isdigit(*val))
+			{
 				fprintf(stderr, "L%d: usage: push integer\n", line_n);
+				exit(EXIT_FAILURE);
+			}
 			val++;
 		}
 		node = make_node(atoi(val_rep) * flag);

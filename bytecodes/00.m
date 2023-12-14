@@ -1,4 +1,6 @@
-push 0
-push 1
+push 9
+push ty
 push 2
-pall
+                push 3
+	push 4
+	pall

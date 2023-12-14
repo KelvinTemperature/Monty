@@ -92,13 +92,13 @@ void match_func(char *opcode, char *value, int line_num, int format)
 		{"pall", pall},
 		{"pint", pint},
 		{"pop", pop},
-		/*{"nop", _nop},*/
+		{"nop", _nop},
 		{"swap", swap},
 		{"add", add},
 		{"sub", sub},
 		{"div", _div},
-		/*{"mul", _mul},*/
-		/*{"mod", _mod},*/
+		{"mul", _mul},
+		{"mod", _mod},
 		/*{"pchar", _pchar},*/
 		/*{"pstr", _pstr},*/
 		{"rotl", rotl},

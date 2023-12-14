@@ -21,7 +21,7 @@ void add(stack_t **node, unsigned int ln)
 
 	if (temp->prev == NULL || temp->prev->prev == NULL)
 	{
-		fprintf(stderr, "L%d: can;t add, stack too short\n", ln);
+		fprintf(stderr, "L%d: can't add, stack too short\n", ln);
 		exit(EXIT_FAILURE);
 	}
 

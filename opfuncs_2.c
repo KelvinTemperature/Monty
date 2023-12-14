@@ -80,7 +80,7 @@ void _pchar(stack_t **node, unsigned int ln)
 
 	num = (*node)->n;
 	if (num < 0 || num > 127)
-		fprntf(stderr, "L%d: can't pchar, value of range", ln);
+		fprintf(stderr, "L%d: can't pchar, value of range", ln);
 	printf("%c\n", num);
 
 	ln += 1;
@@ -96,6 +96,7 @@ void _pstr(stack_t **node, unsigned int ln)
 	int num;
 	stack_t *temp;
 
+	(void)ln;
 	if (node == NULL || *node == NULL)
 	{
 		printf("\n");
@@ -106,12 +107,12 @@ void _pstr(stack_t **node, unsigned int ln)
 	{
 		num = temp->n;
 		if (num <= 0 || num > 127)
+		{
 			break;
+		}
 		printf("%c", num);
+
 		temp = temp->next;
 	}
 	printf("\n");
-
-	ln += 1;	
-
 }

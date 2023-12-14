@@ -61,7 +61,7 @@ int tok_line(char *buffer, int line_num, int format)
 	opcode = strtok(buffer, delim);
 	if (opcode == NULL)
 	{
- 		return (format);
+		return (format);
 	}
 
 	in_val = strtok(NULL, delim);
@@ -99,8 +99,8 @@ void match_func(char *opcode, char *value, int line_num, int format)
 		{"div", _div},
 		{"mul", _mul},
 		{"mod", _mod},
-		/*{"pchar", _pchar},*/
-		/*{"pstr", _pstr},*/
+		{"pchar", _pchar},
+		{"pstr", _pstr},
 		{"rotl", rotl},
 		{"rotr", rotr},
 		{NULL, NULL}

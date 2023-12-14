@@ -78,7 +78,7 @@ void _div(stack_t **node, unsigned int ln)
 
 	if (*node == NULL)
 	{
-		fprintf(stderr, "L%d: can't sub, stack too short", ln);
+		fprintf(stderr, "L%d: can't div, stack too short\n", ln);
 		exit(EXIT_FAILURE);
 	}
 	while (temp->next != NULL)
@@ -86,15 +86,15 @@ void _div(stack_t **node, unsigned int ln)
 
 	if (temp->prev == NULL || temp->prev->prev == NULL)
 	{
-		fprintf(stderr, "L%d: can' div, stack too short", ln);
+		fprintf(stderr, "L%d: can't div, stack too short\n", ln);
 		exit(EXIT_FAILURE);
 	}
 
 	tos = temp;
 	temp = temp->prev;
-	if (temp->n == 0)
+	if (tos->n == 0)
 	{
-		fprintf(stderr, "L%d: division by zero", ln);
+		fprintf(stderr, "L%d: division by zero\n", ln);
 		exit(EXIT_FAILURE);
 	}
 	temp->n /= tos->n;

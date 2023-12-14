@@ -11,7 +11,10 @@ void file_open(char *filename)
 	FILE *file_des = fopen(filename, "r");
 
 	if (filename == NULL || file_des == NULL)
+	{
 		fprintf(stderr, "Error: Can't open file %s\n", filename);
+		exit(EXIT_FAILURE);
+	}
 
 	file_read(file_des);
 	fclose(file_des);
@@ -51,7 +54,10 @@ int tok_line(char *buffer, int line_num, int format)
 	const char *delim = "\n\t ";
 
 	if (buffer == NULL)
+	{
 		fprintf(stderr, "Error: malloc failed\n");
+		exit(EXIT_FAILURE);
+	}
 
 	opcode = strtok(buffer, delim);
 	if (opcode == NULL)

@@ -48,7 +48,7 @@ void file_read(FILE *file_des)
 int tok_line(char *buffer, int line_num, int format)
 {
 	char *opcode, *in_val;
-	const char *delim = "\n ";
+	const char *delim = "\n\t ";
 
 	if (buffer == NULL)
 		fprintf(stderr, "Error: malloc failed\n");
@@ -124,7 +124,7 @@ void match_func(char *opcode, char *value, int line_num, int format)
 void _exec(op_func func, char *opc, char *val, unsigned int line_n, int format)
 {
 	stack_t *node;
-int flag = 1;
+	int flag = 1;
 
 	if (strcmp(opc, "push") == 0)
 	{

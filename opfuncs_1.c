@@ -22,7 +22,8 @@ void push(stack_t **node, unsigned int ln)
 	}
 
 	for (temp = head; temp->next != NULL; temp = temp->next)
-		/* do nothing */
+		;/* do nothing */
+
 	temp->next = *node;
 	(*node)->prev = temp;
 	(*node)->next = NULL;
@@ -42,15 +43,14 @@ void pall(stack_t **node, unsigned int ln)
 	while (temp->next != NULL)
 		temp = temp->next;
 
-	printf("%d", temp->n);
+	printf("%d\n", temp->n);
 	while (temp->prev != NULL)
 	{
 		temp = temp->prev;
-		printf("%d", temp->n);
+		printf("%d\n", temp->n);
 	}
 	ln += 1;
 }
-
 
 /**
  * pint - peek into top of stack
@@ -70,7 +70,7 @@ void pint(stack_t **node, unsigned int ln)
 	while (temp->next != NULL)
 		temp = temp->next;
 
-	printf("%d", temp->n);
+	printf("%d\n", temp->n);
 
 	ln += 1;
 }

@@ -61,7 +61,7 @@ void pint(stack_t **node, unsigned int ln)
 {
 	stack_t *temp = *node;
 
-	if (temp = NULL || !temp->n)
+	if (temp == NULL || !temp->n)
 	{
 		fprintf(stderr, "L%d: can't pint, empty stack\n", ln);
 		exit(EXIT_FAILURE);
@@ -83,24 +83,30 @@ void pint(stack_t **node, unsigned int ln)
  */
 void pop(stack_t **node, unsigned int ln)
 {
-	stack_t *temp = *node;
+	stack_t *temp;
 
-	if (temp = NULL || !temp->n)
+	if (*node == NULL)
 	{
 		fprintf(stderr, "L%d: can't pop an empty stack\n", ln);
 		exit(EXIT_FAILURE);
 	}
 
-	while (temp->next != NULL)
-		temp = temp->next;
-
-	temp->prev;
-	free(temp->next);
-	temp->next = NULL;
+	temp = *node;
+	if (temp->next != NULL)
+	{
+		while (temp->next != NULL)
+			temp = temp->next;
+		temp->prev->next = NULL;
+		free(temp);
+	}
+	else
+	{
+		free(temp);
+		*node = NULL;
+	}
 
 	ln += 1;
 }
-
 
 /**
  * swap - swaps TOS with TOS - 1
@@ -112,7 +118,7 @@ void swap(stack_t **node, unsigned int ln)
 	stack_t *temp = *node;
 	stack_t *tos, *swap;
 
-	if (temp = NULL)
+	if (temp == NULL)
 	{
 		fprintf(stderr, "L%d: can't swap, stack too short\n", ln);
 		exit(EXIT_FAILURE);
@@ -121,6 +127,7 @@ void swap(stack_t **node, unsigned int ln)
 	while (temp->next != NULL)
 		temp = temp->next;
 
+	tos = temp;
 	if (temp->prev == NULL || temp->prev->prev == NULL)
 	{
 		fprintf(stderr, "L%d: can't swap, stack too short\n", ln);
@@ -128,7 +135,7 @@ void swap(stack_t **node, unsigned int ln)
 	}
 
 	swap = tos->prev->prev;
-	tos->prev-prev = temp;
+	tos->prev->prev = temp;
 	tos->prev->next = NULL;
 	tos->next = temp->prev;
 	tos->prev = swap;

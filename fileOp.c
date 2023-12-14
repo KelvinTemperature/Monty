@@ -84,16 +84,16 @@ void match_func(char *opcode, char *value, int line_num, int format)
 		{"pall", pall},
 		{"pint", pint},
 		{"pop", pop},
-		{"nop", nop},
+		/*{"nop", _nop},*/
 		{"swap", swap},
 		{"add", add},
 		{"sub", sub},
 		{"div", _div},
-		{"mul", mul},
-		{"mod", mod},
-		{"pchar", pchar},
-		{"pstr", pstr},
-		{"rotl", rot1},
+		/*{"mul", _mul},*/
+		/*{"mod", _mod},*/
+		/*{"pchar", _pchar},*/
+		/*{"pstr", _pstr},*/
+		{"rotl", rotl},
 		{"rotr", rotr},
 		{NULL, NULL}
 	};
@@ -146,7 +146,7 @@ int flag = 1;
 		if (format == 0)
 			func(&node, line_n);
 		if (format == 1)
-			add_to_stack(&node, line_n);
+			add_to_queue(&node, line_n);
 	}
 	else
 		func(&head, line_n);

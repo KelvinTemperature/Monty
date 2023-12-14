@@ -1,6 +1,7 @@
 #ifndef MONTY_H
 #define MONTY_H
 
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -46,30 +47,29 @@ typedef struct instruction_s
 /* Linked List Funtions */
 stack_t *make_node(int n);
 void free_all_nodes(void);
-void add_to_stack(stack_t **new_node, unsigned int ln);
-
+void add_to_queue(stack_t **new_node, __attribute__((unused))unsigned int ln);
 /* File Operation Functions */
 void file_open(char *filename);
 void file_read(FILE *file_des);
 int tok_line(char *buffer, int line_num, int format);
 void match_func(char *opcode, char *value, int line_num, int format);
-void _exec(op_func func, char *opc, char *val, int line_n, int format);
+void _exec(op_func func, char *opc, char *val, unsigned int line_n, int format);
 
 /* Opcode functions */
 void push(stack_t **node, unsigned int ln);
 void pall(stack_t **node, unsigned int ln);
 void pint(stack_t **node, unsigned int ln);
 void pop(stack_t **node, unsigned int ln);
-void nop(stack_t **node, unsigned int ln);
+void _nop(stack_t **node, unsigned int ln);
 void swap(stack_t **node, unsigned int ln);
 void add(stack_t **node, unsigned int ln);
 void sub(stack_t **node, unsigned int ln);
 void _div(stack_t **node, unsigned int ln);
-void mul(stack_t **node, unsigned int ln);
-void mod(stack_t **node, unsigned int ln);
-void pchar(stack_t **node, unsigned int ln);
-void pstr(stack_t **node, unsigned int ln);
-void rot1(stack_t **node, unsigned int ln);
+void _mul(stack_t **node, unsigned int ln);
+void _mod(stack_t **node, unsigned int ln);
+void _pchar(stack_t **node, unsigned int ln);
+void _pstr(stack_t **node, unsigned int ln);
+void rotl(stack_t **node, unsigned int ln);
 void rotr(stack_t **node, unsigned int ln);
 
 #endif

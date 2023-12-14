@@ -1,4 +1,4 @@
-#include "main.h"
+#include "monty.h"
 
 
 /**
@@ -9,48 +9,42 @@
 void rotr(stack_t **node, unsigned int ln)
 {
 	stack_t *temp = *node;
-	stack_t *swap;
 
-	if (*node == NULL)
+	if (temp == NULL || temp->next == NULL)
 		return;
 	while (temp->next != NULL)
 		temp = temp->next;
 
-	temp->next = head;
-	head->prev = temp;
-	temp = head->next;
-	head->next = NULL;
+	temp->next = *node;
+	(*node)->prev = temp;
+	temp = temp->prev;
+	temp->next->prev = NULL;
+	temp->next = NULL;
 
-	swap = head;
-	head = temp;
-	head->prev = NULL;
+	*node = temp;
 
 	ln += 1;
 }
 
-
 /**
- * rot1 - rotates list;
+ * rotl - rotates list;
  * @node: any node
  * @ln: line number
  */
-void rot1(stack_t **node, unsigned int ln)
+void rotl(stack_t **node, unsigned int ln)
 {
 	stack_t *temp = *node;
-	stack_t *swap;
 
-	if (*node == NULL)
+	if (temp == NULL || temp->next == NULL)
 		return;
 	while (temp->next != NULL)
 		temp = temp->next;
 
-	temp->next = head;
-	temp->prev->next = NULL;
-	temp->prev = NULL;
-
-	swap = head;
-	head = temp;
-	temp = swap;
+	temp->next = *node;
+	(*node)->prev = temp;
+	*node = (*node)->next;
+	(*node)->prev->next = NULL;
+	(*node)->prev = NULL;
 
 	ln += 1;
 }

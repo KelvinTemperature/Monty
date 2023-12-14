@@ -6,7 +6,7 @@
  * @node: any node, preferably top os stack
  * @ln: line number
  */
-void sub(stack_t **node, unsigned int ln)
+void add(stack_t **node, unsigned int ln)
 {
 	stack_t temp = *node;
 	stack_t *tos;

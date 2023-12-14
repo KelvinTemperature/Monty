@@ -7,7 +7,6 @@
 #include <ctype.h>
 #include <stdarg.h>
 #include <unistd.h>
-
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
  * @n: integer
@@ -24,6 +23,11 @@ typedef struct stack_s
 	struct stack_s *next;
 } stack_t;
 
+extern stack_t *head;
+
+typedef void(*op_func)(stack_t **, unsigned int);
+
+
 /**
  * struct instruction_s - opcode and its function
  * @opcode: the opcode
@@ -38,39 +42,34 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-extern stack_t *head;
-:wtypedef void(*op_func)(stack_t **, unsigned int);
-
-
-/**
- * arguments_s: contains argument that every function needs
- * @line: holds current line number;
- * @len: holds length of stack, such that
- *		: if len = 0, stack is empty;
- *		: if len = -1,  stack overflow
- * @tos: pointer to TOP OF STACK. (ie the second end, opposite of head)
- */
-typedef struct arguments_s
-{
-	unsigned int line;
-	int len;
-	struct stack_s *tos;
-} args_t;
-
-/* initializes an args_t structure */
-#define INIT_ARGS {0, 0, NULL};
-
 
 /* Linked List Funtions */
 stack_t *make_node(int n);
 void free_all_nodes(void);
-void add_to_stack(stack_t **new_node, args_t **args);
+void add_to_stack(stack_t **new_node, unsigned int ln);
 
 /* File Operation Functions */
 void file_open(char *filename);
 void file_read(FILE *file_des);
 int tok_line(char *buffer, int line_num, int format);
 void match_func(char *opcode, char *value, int line_num, int format);
-void exec(op_func func, char *opc, char *val, int line_n, int format);
+void _exec(op_func func, char *opc, char *val, int line_n, int format);
+
+/* Opcode functions */
+void push(stack_t **node, unsigned int ln);
+void pall(stack_t **node, unsigned int ln);
+void pint(stack_t **node, unsigned int ln);
+void pop(stack_t **node, unsigned int ln);
+void nop(stack_t **node, unsigned int ln);
+void swap(stack_t **node, unsigned int ln);
+void add(stack_t **node, unsigned int ln);
+void sub(stack_t **node, unsigned int ln);
+void _div(stack_t **node, unsigned int ln);
+void mul(stack_t **node, unsigned int ln);
+void mod(stack_t **node, unsigned int ln);
+void pchar(stack_t **node, unsigned int ln);
+void pstr(stack_t **node, unsigned int ln);
+void rot1(stack_t **node, unsigned int ln);
+void rotr(stack_t **node, unsigned int ln);
 
 #endif

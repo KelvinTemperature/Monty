@@ -23,7 +23,7 @@ void file_open(char *filename)
  * Return: Nothing
  */
 
-void file_read(File *file_des)
+void file_read(FILE *file_des)
 {
 	int line_num, format = 0;
 	char *buffer = NULL;
@@ -45,7 +45,7 @@ void file_read(File *file_des)
  * Return: 0 for stack and 1 for queue
  */
 
-void tok_line(char *buffer, int line_num, int format)
+int tok_line(char *buffer, int line_num, int format)
 {
 	char *opcode, *in_val;
 	const char *delim = "\n ";
@@ -80,32 +80,32 @@ void match_func(char *opcode, char *value, int line_num, int format)
 	int i, flag;
 
 	instruction_t funct_list[] = {
-		{"push", },
-		{"pall", },
-		{"pint", },
-		{"pop", },
-		{"nop", },
-		{"swap", },
-		{"add", },
-		{"sub", },
-		{"div", },
-		{"mul", },
-		{"mod", },
-		{"pchar", },
-		{"pstr", },
-		{"rotl", },
-		{"rotr", },
+		{"push", push},
+		{"pall", pall},
+		{"pint", pint},
+		{"pop", pop},
+		{"nop", nop},
+		{"swap", swap},
+		{"add", add},
+		{"sub", sub},
+		{"div", _div},
+		{"mul", mul},
+		{"mod", mod},
+		{"pchar", pchar},
+		{"pstr", pstr},
+		{"rotl", rot1},
+		{"rotr", rotr},
 		{NULL, NULL}
 	};
 
 	if (opcode[0] == '#')
 		return;
 
-	for (flage = 1, i = 0; funct_list[i].opcode != NULL; i++)
+	for (flag = 1, i = 0; funct_list[i].opcode != NULL; i++)
 	{
 		if (strcmp(opcode, funct_list[i].opcode) == 0)
 		{
-			exec(func_list[i].f, opcode, value, line_num, format);
+			_exec(funct_list[i].f, opcode, value, line_num, format);
 			flag = 0;
 		}
 	}
@@ -114,17 +114,17 @@ void match_func(char *opcode, char *value, int line_num, int format)
 }
 
 /**
- * exec - executes the function called
+ * _exec - executes the function called
  * @func: function to execute
  * @opc: opcode
  * @val: value
  * @line_n: Line number
  * @format: 0 for stack, 1 for queue
  */
-void exec(op_func func, char *opc, char *val, int line_n, int format)
+void _exec(op_func func, char *opc, char *val, unsigned int line_n, int format)
 {
 	stack_t *node;
-	int i, flag = 1;
+int flag = 1;
 
 	if (strcmp(opc, "push") == 0)
 	{
@@ -146,7 +146,7 @@ void exec(op_func func, char *opc, char *val, int line_n, int format)
 		if (format == 0)
 			func(&node, line_n);
 		if (format == 1)
-			add_to_queue(&node, line_n);
+			add_to_stack(&node, line_n);
 	}
 	else
 		func(&head, line_n);

@@ -70,7 +70,7 @@ void sub(stack_t **node, unsigned int ln)
  * @node: any node, preferably top os stack
  * @ln: line number
  */
-void sub(stack_t **node, unsigned int ln)
+void div(stack_t **node, unsigned int ln)
 {
 	stack_t temp = *node;
 	stack_t *tos;

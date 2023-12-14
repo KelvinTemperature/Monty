@@ -56,6 +56,7 @@ int tok_line(char *buffer, int line_num, int format)
 	opcode = strtok(buffer, delim);
 	if (opcode == NULL)
 		return (format);
+
 	in_val = strtok(NULL, delim);
 
 	if (strcmp(opcode, "stack") == 0)
@@ -123,6 +124,7 @@ void match_func(char *opcode, char *value, int line_num, int format)
  */
 void _exec(op_func func, char *opc, char *val, unsigned int line_n, int format)
 {
+	char *val_rep = val;
 	stack_t *node;
 	int flag = 1;
 
@@ -142,7 +144,8 @@ void _exec(op_func func, char *opc, char *val, unsigned int line_n, int format)
 				fprintf(stderr, "L%d: usage: push integer\n", line_n);
 			val++;
 		}
-		node = make_node(atoi(val) * flag);
+		printf("the val is: %s\n", val_rep);
+		node = make_node(atoi(val_rep) * flag);
 		if (format == 0)
 			func(&node, line_n);
 		if (format == 1)

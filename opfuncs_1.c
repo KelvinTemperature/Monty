@@ -21,9 +21,12 @@ void push(stack_t **node, unsigned int ln)
 		return;
 	}
 
-	for (temp = head; temp->next != NULL; temp = temp->next)
-		;/* do nothing */
-
+	temp = head;
+	while (temp->next != NULL)
+	{
+		temp = temp->next;
+		printf("temp: %d\n", temp->n);
+	}
 	temp->next = *node;
 	(*node)->prev = temp;
 	(*node)->next = NULL;

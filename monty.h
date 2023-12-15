@@ -79,6 +79,8 @@ void file_read(FILE *file_des);
 int tok_line(char *buffer, int line_num, int format);
 void match_func(char *opcode, char *value, int line_num, int format);
 void _exec(op_func func, char *opc, char *val, unsigned int line_n, int format);
+int help_exec(char *opc, char *val, unsigned int line_n, int
+		format);
 
 /* Opcode functions */
 void push(stack_t **node, unsigned int ln);

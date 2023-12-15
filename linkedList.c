@@ -124,3 +124,31 @@ void add_to_queue(stack_t **new_node, __attribute__((unused))unsigned int ln)
 	globals->head->prev = NULL;
 
 }
+
+
+/**
+ * _exec - executes the function called
+ * @func: function to execute
+ * @opc: opcode
+ * @val: value
+ * @line_n: Line number
+ * @format: 0 for stack, 1 for queue
+ *
+ */
+void _exec(op_func func, char *opc, char *val, unsigned int line_n, int format)
+{
+	int go_on;
+
+	go_on = help_exec(opc, val, line_n, format);
+	if (go_on == 0)
+	{
+		if (globals->len > 1)
+		{
+			func(&(globals->tail), line_n);
+		}
+		else
+		{
+			func(&(globals->head), line_n);
+		}
+	}
+}

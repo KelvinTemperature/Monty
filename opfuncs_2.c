@@ -55,7 +55,7 @@ void _mod(stack_t **node, unsigned int ln)
 	stack_t *temp = *node;
 	stack_t *tos;
 
-	if (globals->len < 2 )
+	if (globals->len < 2)
 	{
 		fprintf(stderr, "L%d: can't mod, stack too short\n", ln);
 		exit(EXIT_FAILURE);

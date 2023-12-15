@@ -34,7 +34,7 @@ void file_read(FILE *file_des)
 
 	globals->ln = 1;
 	ret = getline(&(globals->buf), &len, file_des);
-	
+
 	while (ret != -1)
 	{
 		format = tok_line(globals->buf, globals->ln, format);
@@ -61,7 +61,7 @@ int tok_line(char *buffer, int line_num, int format)
 	if (buffer == NULL)
 	{
 		if (globals->len != 0)
-			free_all_nodes();	
+			free_all_nodes();
 		exit(EXIT_FAILURE);
 	}
 
@@ -113,7 +113,6 @@ void match_func(char *opcode, char *value, int line_num, int format)
 
 	if (opcode[0] == '#')
 		return;
-
 	for (flag = 1, i = 0; funct_list[i].opcode != NULL; i++)
 	{
 		if (strcmp(opcode, funct_list[i].opcode) == 0)
@@ -128,23 +127,24 @@ void match_func(char *opcode, char *value, int line_num, int format)
 		fclose(globals->fp);
 		if (globals->len != 0)
 			free_all_nodes();
-	fprintf(stderr, "L%d: unknown instruction %s\n", line_num, opcode);
+		fprintf(stderr, "L%d: unknown instruction %s\n", line_num, opcode);
 		exit(EXIT_FAILURE);
 	}
 }
 
 /**
- * _exec - executes the function called
- * @func: function to execute
- * @opc: opcode
- * @val: value
- * @line_n: Line number
- * @format: 0 for stack, 1 for queue
+ * help_exec - _exec became too long, so this will do some sub routine for it
+ * @opc: ...
+ * @val: ...
+ * @line_n: ...
+ * @format: ...
+ *
+ * Return: 1 if it executed, 0 if it didnt
  */
-void _exec(op_func func, char *opc, char *val, unsigned int line_n, int format)
+int help_exec(char *opc, char *val, unsigned int line_n, int format)
 {
-	char *val_rep = val;
 	stack_t *node;
+	char *val_rep = val;
 	int flag = 1;
 
 	if (strcmp(opc, "push") == 0)
@@ -160,12 +160,10 @@ void _exec(op_func func, char *opc, char *val, unsigned int line_n, int format)
 			fclose(globals->fp);
 			if (globals->len != 0)
 				free_all_nodes();
-
 			fprintf(stderr, "L%d: usage: push integer\n", line_n);
 			exit(EXIT_FAILURE);
 		}
-
-		while (*val != '\0')
+		for ( ; *val != '\0'; val++)
 		{
 			if (!isdigit(*val))
 			{
@@ -173,27 +171,16 @@ void _exec(op_func func, char *opc, char *val, unsigned int line_n, int format)
 				fclose(globals->fp);
 				if (globals->len != 0)
 					free_all_nodes();
-
 				fprintf(stderr, "L%d: usage: push integer\n", line_n);
 				exit(EXIT_FAILURE);
 			}
-			val++;
 		}
 		node = make_node(atoi(val_rep) * flag);
 		if (format == 0)
 			add_to_stack(&node, line_n);
 		if (format == 1)
-		{
 			add_to_queue(&node, line_n);
-		}
+		return (1);
 	}
-	else
-	{
-		if (globals->len > 1)
-		{
-			func(&(globals->tail), line_n);
-		}
-		else
-			func(&(globals->head), line_n);
-	}
+	return (0);
 }

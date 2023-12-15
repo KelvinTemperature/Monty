@@ -14,6 +14,7 @@ globals_t *globals;
 int main(int ac, char **av)
 {
 	globals_t all_var = GLOBAL_INIT;
+
 	globals = &all_var;
 
 	if (ac != 2)

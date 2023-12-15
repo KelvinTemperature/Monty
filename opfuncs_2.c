@@ -22,8 +22,13 @@ void _mul(stack_t **node, unsigned int ln)
 	stack_t *temp = *node;
 	stack_t *tos;
 
-	if (*node == NULL || (*node)->next == NULL)
+	if (globals->len < 2)
 	{
+
+		free(globals->buf);
+		fclose(globals->fp);
+		if (globals->len != 0)
+			free_all_nodes();
 		fprintf(stderr, "L%d: can't mul, stack too short\n", ln);
 		exit(EXIT_FAILURE);
 	}
@@ -36,6 +41,7 @@ void _mul(stack_t **node, unsigned int ln)
 	temp->next = NULL;
 	free(tos);
 
+	globals->len -= 1;
 	ln += 1;
 }
 
@@ -49,7 +55,7 @@ void _mod(stack_t **node, unsigned int ln)
 	stack_t *temp = *node;
 	stack_t *tos;
 
-	if (*node == NULL || (*node)->next == NULL)
+	if (globals->len < 2 )
 	{
 		fprintf(stderr, "L%d: can't mod, stack too short\n", ln);
 		exit(EXIT_FAILURE);
@@ -63,6 +69,7 @@ void _mod(stack_t **node, unsigned int ln)
 	temp->next = NULL;
 	free(tos);
 
+	globals->len -= 1;
 	ln += 1;
 }
 
@@ -75,12 +82,26 @@ void _pchar(stack_t **node, unsigned int ln)
 {
 	int num;
 
-	if (node == NULL || *node == NULL)
-		fprintf(stderr, "L%d: can't pchar, stack empty", ln);
+	if (node == NULL || *node == NULL || globals->len < 1)
+	{
+		free(globals->buf);
+		fclose(globals->fp);
+		if (globals->len != 0)
+			free_all_nodes();
+		fprintf(stderr, "L%d: can't pchar, stack empty\n", ln);
+		exit(EXIT_FAILURE);
+	}
 
 	num = (*node)->n;
 	if (num < 0 || num > 127)
-		fprintf(stderr, "L%d: can't pchar, value of range", ln);
+	{
+		free(globals->buf);
+		fclose(globals->fp);
+		if (globals->len != 0)
+			free_all_nodes();
+		fprintf(stderr, "L%d: can't pchar, value of range\n", ln);
+		exit(EXIT_FAILURE);
+	}
 	printf("%c\n", num);
 
 	ln += 1;
@@ -97,7 +118,7 @@ void _pstr(stack_t **node, unsigned int ln)
 	stack_t *temp;
 
 	(void)ln;
-	if (node == NULL || *node == NULL)
+	if (node == NULL || *node == NULL || globals->len < 1)
 	{
 		printf("\n");
 		return;

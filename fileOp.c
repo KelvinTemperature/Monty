@@ -8,16 +8,16 @@
 
 void file_open(char *filename)
 {
-	FILE *file_des = fopen(filename, "r");
+	globals->fp = fopen(filename, "r");
 
-	if (filename == NULL || file_des == NULL)
+	if (filename == NULL || globals->fp == NULL)
 	{
 		fprintf(stderr, "Error: Can't open file %s\n", filename);
 		exit(EXIT_FAILURE);
 	}
 
-	file_read(file_des);
-	fclose(file_des);
+	file_read(globals->fp);
+	fclose(globals->fp);
 }
 
 /**
@@ -28,15 +28,20 @@ void file_open(char *filename)
 
 void file_read(FILE *file_des)
 {
-	int line_num, format = 0;
-	char *buffer = NULL;
+	int format = 0;
 	size_t len = 0;
+	int ret;
 
-	for (line_num = 1; getline(&buffer, &len, file_des) != -1; line_num++)
+	globals->ln = 1;
+	ret = getline(&(globals->buf), &len, file_des);
+	
+	while (ret != -1)
 	{
-		format = tok_line(buffer, line_num, format);
+		format = tok_line(globals->buf, globals->ln, format);
+		globals->ln++;
+		ret = getline(&(globals->buf), &len, file_des);
 	}
-	free(buffer);
+	free(globals->buf);
 }
 
 /**
@@ -55,14 +60,14 @@ int tok_line(char *buffer, int line_num, int format)
 
 	if (buffer == NULL)
 	{
+		if (globals->len != 0)
+			free_all_nodes();	
 		exit(EXIT_FAILURE);
 	}
 
 	opcode = strtok(buffer, delim);
 	if (opcode == NULL)
-	{
 		return (format);
-	}
 
 	in_val = strtok(NULL, delim);
 
@@ -119,7 +124,11 @@ void match_func(char *opcode, char *value, int line_num, int format)
 	}
 	if (flag == 1)
 	{
-		fprintf(stderr, "L%d: unknown instruction %s\n", line_num, opcode);
+		free(globals->buf);
+		fclose(globals->fp);
+		if (globals->len != 0)
+			free_all_nodes();
+	fprintf(stderr, "L%d: unknown instruction %s\n", line_num, opcode);
 		exit(EXIT_FAILURE);
 	}
 }
@@ -147,6 +156,11 @@ void _exec(op_func func, char *opc, char *val, unsigned int line_n, int format)
 		}
 		if (val == NULL)
 		{
+			free(globals->buf);
+			fclose(globals->fp);
+			if (globals->len != 0)
+				free_all_nodes();
+
 			fprintf(stderr, "L%d: usage: push integer\n", line_n);
 			exit(EXIT_FAILURE);
 		}
@@ -155,6 +169,11 @@ void _exec(op_func func, char *opc, char *val, unsigned int line_n, int format)
 		{
 			if (!isdigit(*val))
 			{
+				free(globals->buf);
+				fclose(globals->fp);
+				if (globals->len != 0)
+					free_all_nodes();
+
 				fprintf(stderr, "L%d: usage: push integer\n", line_n);
 				exit(EXIT_FAILURE);
 			}
@@ -162,10 +181,19 @@ void _exec(op_func func, char *opc, char *val, unsigned int line_n, int format)
 		}
 		node = make_node(atoi(val_rep) * flag);
 		if (format == 0)
-			func(&node, line_n);
+			add_to_stack(&node, line_n);
 		if (format == 1)
+		{
 			add_to_queue(&node, line_n);
+		}
 	}
 	else
-		func(&head, line_n);
+	{
+		if (globals->len > 1)
+		{
+			func(&(globals->tail), line_n);
+		}
+		else
+			func(&(globals->head), line_n);
+	}
 }

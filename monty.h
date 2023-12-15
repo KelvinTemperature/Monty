@@ -24,7 +24,31 @@ typedef struct stack_s
 	struct stack_s *next;
 } stack_t;
 
-extern stack_t *head;
+/**
+ * struct globals_s - holds all global element
+ * @fp: pointer to file that we are reading from
+ * @buf: The malloced buffer that getline returns
+ * @head: beggining of our list, First in
+ * @tail: end of our list, Last in
+ * @len: number of nodes in our list
+ * @ln: line number in @fp
+ *
+ * Description: only one instance of this struct should exist
+ */
+typedef struct globals_s
+{
+	FILE *fp;
+	char *buf;
+	stack_t *head;
+	stack_t *tail;
+	unsigned int len;
+	unsigned int ln;
+} globals_t;
+
+extern globals_t *globals;
+
+/* Used to initialize global */
+#define GLOBAL_INIT {NULL, NULL, NULL, NULL, 0, 0}
 
 typedef void(*op_func)(stack_t **, unsigned int);
 
@@ -49,6 +73,7 @@ stack_t *make_node(int n);
 void free_all_nodes(void);
 void add_to_queue(stack_t **new_node, __attribute__((unused))unsigned int ln);
 /* File Operation Functions */
+void add_to_stack(stack_t **new_node, __attribute__((unused))unsigned int ln);
 void file_open(char *filename);
 void file_read(FILE *file_des);
 int tok_line(char *buffer, int line_num, int format);

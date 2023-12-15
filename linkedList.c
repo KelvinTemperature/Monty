@@ -11,11 +11,31 @@ stack_t *make_node(int n)
 
 	new_node = malloc(sizeof(stack_t));
 	if (new_node == NULL)
+	{
 		fprintf(stderr, "Error: malloc failed\n");
+		free(globals->buf);
+		fclose(globals->fp);
 
-	new_node->next = NULL;
-	new_node->prev = NULL;
-	new_node->n = n;
+		if (globals->len != 0)
+			free_all_nodes();
+		exit(EXIT_FAILURE);
+	}
+	if (globals->len < 1)
+	{
+		globals->head = new_node;
+		globals->head->next = NULL;
+		globals->head->prev = NULL;
+		globals->tail = globals->head;
+		globals->len += 1;
+		globals->head->n = n;
+	}
+	else
+	{
+		globals->len += 1;
+		new_node->next = NULL;
+		new_node->prev = NULL;
+		new_node->n = n;
+	}
 
 	return (new_node);
 }
@@ -27,15 +47,53 @@ void free_all_nodes(void)
 {
 	stack_t *temp;
 
-	if (head == NULL)
+	if (globals->head == NULL || globals->len < 1)
 		return;
-	while (head != NULL)
+	while (globals->head != NULL)
 	{
-		temp = head;
-		head = head->next;
+		temp = globals->head;
+		globals->head = globals->head->next;
 		free(temp);
 	}
 }
+
+
+/**
+ * add_to_stack - adds a node to the stack
+ * @new_node: pointer to new node
+ * @ln: line number of the opcode
+ */
+void add_to_stack(stack_t **new_node, __attribute__((unused))unsigned int ln)
+{
+	stack_t *temp;
+
+	if (new_node == NULL || *new_node == NULL)
+	{
+		free(globals->buf);
+		fclose(globals->fp);
+		if (globals->len != 0)
+			free_all_nodes();
+
+		exit(EXIT_FAILURE);
+	}
+	if (globals->len == 1)
+		return;
+	if (globals->head == NULL)
+	{
+		globals->head = *new_node;
+		globals->head->prev = NULL;
+		globals->head->next = globals->tail;
+		return;
+	}
+	temp = globals->head;
+	while (temp->next != NULL)
+		temp = temp->next;
+	temp->next = *new_node;
+	globals->tail = *new_node;
+	globals->tail->prev = temp;
+	globals->tail->next = NULL;
+}
+
 /**
  * add_to_queue - adds a node to the queue
  * @new_node: pointer to new node
@@ -43,20 +101,26 @@ void free_all_nodes(void)
  */
 void add_to_queue(stack_t **new_node, __attribute__((unused))unsigned int ln)
 {
-	stack_t *temp;
+	stack_t *temp = *new_node;
 
-	if (new_node == NULL || *new_node == NULL)
-		exit(EXIT_FAILURE);
-	if (head == NULL)
+	if (globals->len < 1)
 	{
-		head = *new_node;
-		head->prev = NULL;
-		head->next = NULL;
-		return;
+		free(globals->buf);
+		fclose(globals->fp);
+		if (globals->len != 0)
+			free_all_nodes();
+
+		exit(EXIT_FAILURE);
 	}
-	temp = head;
-	while (temp->next != NULL)
-		temp = temp->next;
-	temp->next = *new_node;
-	(*new_node)->prev = temp;
+	if (globals->len == 1)
+		return;
+
+	temp = globals->tail;
+	while (temp->prev != NULL)
+		temp = temp->prev;
+	temp->prev = *new_node;
+	globals->head = *new_node;
+	globals->head->next = temp;
+	globals->head->prev = NULL;
+
 }

@@ -11,17 +11,17 @@ void push(stack_t **node, unsigned int ln)
 {
 	stack_t *temp;
 
-	if (head == NULL)
+	if (globals->head == NULL)
 	{
-		head = *node;
-		head->prev = NULL;
-		head->next = NULL;
+		globals->head = *node;
+		globals->head->prev = NULL;
+		globals->head->next = NULL;
 
 		ln += 1;
 		return;
 	}
 
-	temp = head;
+	temp = globals->head;
 	while (temp->next != NULL)
 	{
 		temp = temp->next;
@@ -42,16 +42,21 @@ void pall(stack_t **node, unsigned int ln)
 {
 	stack_t *temp = *node;
 
-	if (head == NULL || *node == NULL)
-		return;
-	while (temp->next != NULL)
-		temp = temp->next;
-
-	printf("%d\n", temp->n);
-	while (temp->prev != NULL)
+	if (globals->tail == NULL)
 	{
-		temp = temp->prev;
+		if (globals->head == NULL)
+			return;
+		printf("%d\n", globals->head->n);
+	}
+	else
+	{
+		temp = globals->tail;
 		printf("%d\n", temp->n);
+		while (temp->prev != NULL)
+		{
+			temp = temp->prev;
+			printf("%d\n", temp->n);
+		}
 	}
 	ln += 1;
 }
@@ -65,8 +70,12 @@ void pint(stack_t **node, unsigned int ln)
 {
 	stack_t *temp = *node;
 
-	if (head == NULL || temp == NULL)
+	if (globals->head == NULL && globals->len > 1)
 	{
+		free(globals->buf);
+		fclose(globals->fp);
+		if (globals->len != 0)
+			free_all_nodes();
 		fprintf(stderr, "L%d: can't pint, stack empty\n", ln);
 		exit(EXIT_FAILURE);
 	}
@@ -89,8 +98,12 @@ void pop(stack_t **node, unsigned int ln)
 {
 	stack_t *temp, *store;
 
-	if (head == NULL || node == NULL || *node == NULL)
+	if (globals->head == NULL || node == NULL || *node == NULL)
 	{
+		free(globals->buf);
+		fclose(globals->fp);
+		if (globals->len != 0)
+			free_all_nodes();
 		fprintf(stderr, "L%d: can't pop an empty stack\n", ln);
 		exit(EXIT_FAILURE);
 	}
@@ -113,6 +126,7 @@ void pop(stack_t **node, unsigned int ln)
 			temp->n = 0;
 	}
 
+	globals->len -= 1;
 	ln += 1;
 }
 
@@ -128,6 +142,10 @@ void swap(stack_t **node, unsigned int ln)
 
 	if (temp == NULL)
 	{
+		free(globals->buf);
+		fclose(globals->fp);
+		if (globals->len != 0)
+			free_all_nodes();
 		fprintf(stderr, "L%d: can't swap, stack too short\n", ln);
 		exit(EXIT_FAILURE);
 	}
@@ -138,6 +156,10 @@ void swap(stack_t **node, unsigned int ln)
 	tos = temp;
 	if (temp->prev == NULL || temp->prev->prev == NULL)
 	{
+		free(globals->buf);
+		fclose(globals->fp);
+		if (globals->len != 0)
+			free_all_nodes();
 		fprintf(stderr, "L%d: can't swap, stack too short\n", ln);
 		exit(EXIT_FAILURE);
 	}

@@ -1,5 +1,9 @@
 #include "monty.h"
-stack_t *head = NULL;
+
+
+globals_t *globals;
+
+
 /**
  * main - Entry function for the program
  * @ac: Argument Count
@@ -9,7 +13,8 @@ stack_t *head = NULL;
 
 int main(int ac, char **av)
 {
-	head = NULL;
+	globals_t all_var = GLOBAL_INIT;
+	globals = &all_var;
 
 	if (ac != 2)
 	{

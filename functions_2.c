@@ -67,7 +67,7 @@ void sub(stack_t **node, unsigned int ln)
 }
 
 /**
- * _div: divides tos -1 by tos
+ * _div - divides tos -1 by tos
  * @node: any node, preferably top os stack
  * @ln: line number
  */

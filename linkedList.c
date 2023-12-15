@@ -50,6 +50,8 @@ void add_to_queue(stack_t **new_node, __attribute__((unused))unsigned int ln)
 	if (head == NULL)
 	{
 		head = *new_node;
+		head->prev = NULL;
+		head->next = NULL;
 		return;
 	}
 	temp = head;

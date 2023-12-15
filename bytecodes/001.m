@@ -1,11 +1,7 @@
-push 1 Push 1 onto the stack
-push 2
-   push 3
-                       pall       
-
-push putgr
-
-    push 5    
-      push   6     
-
-pall This is the end of our program. Monty is awesome!
+push 83
+push 84
+push 0
+push 85
+push 86
+pall
+pstr

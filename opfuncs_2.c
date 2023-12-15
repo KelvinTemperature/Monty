@@ -103,6 +103,8 @@ void _pstr(stack_t **node, unsigned int ln)
 		return;
 	}
 	temp = *node;
+	while (temp->next != NULL)
+		temp = temp->next;
 	while (temp != NULL)
 	{
 		num = temp->n;
@@ -112,7 +114,7 @@ void _pstr(stack_t **node, unsigned int ln)
 		}
 		printf("%c", num);
 
-		temp = temp->next;
+		temp = temp->prev;
 	}
 	printf("\n");
 }

@@ -62,6 +62,7 @@ int tok_line(char *buffer, int line_num, int format)
 	{
 		if (globals->len != 0)
 			free_all_nodes();
+		fclose(globals->fp);
 		exit(EXIT_FAILURE);
 	}
 
@@ -123,11 +124,11 @@ void match_func(char *opcode, char *value, int line_num, int format)
 	}
 	if (flag == 1)
 	{
+		fprintf(stderr, "L%d: unknown instruction %s\n", line_num, opcode);
 		free(globals->buf);
 		fclose(globals->fp);
 		if (globals->len != 0)
 			free_all_nodes();
-		fprintf(stderr, "L%d: unknown instruction %s\n", line_num, opcode);
 		exit(EXIT_FAILURE);
 	}
 }

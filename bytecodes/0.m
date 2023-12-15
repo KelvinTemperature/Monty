@@ -1,12 +1,8 @@
-
-
-
-
 queue
-
-
-			push 9
-     push 2
-push 3
-add
+push 65
+push 66
+push 67
+pop
+mod
+nop
 pall

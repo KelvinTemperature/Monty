@@ -24,7 +24,6 @@ void _mul(stack_t **node, unsigned int ln)
 
 	if (globals->len < 2)
 	{
-
 		free(globals->buf);
 		fclose(globals->fp);
 		if (globals->len != 0)
@@ -39,6 +38,7 @@ void _mul(stack_t **node, unsigned int ln)
 	temp = temp->prev;
 	temp->n *= tos->n;
 	temp->next = NULL;
+	globals->tail = temp;
 	free(tos);
 
 	globals->len -= 1;
@@ -67,6 +67,7 @@ void _mod(stack_t **node, unsigned int ln)
 	temp = temp->prev;
 	temp->n %= tos->n;
 	temp->next = NULL;
+	globals->tail = temp;
 	free(tos);
 
 	globals->len -= 1;

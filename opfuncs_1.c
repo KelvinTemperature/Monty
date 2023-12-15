@@ -70,6 +70,13 @@ void pint(stack_t **node, unsigned int ln)
 {
 	stack_t *temp = *node;
 
+	if (globals->len < 1)
+	{
+		fclose(globals->fp);
+		fprintf(stderr, "L%d: can't pint, stack empty\n", ln);
+		free(globals->buf);
+		exit(EXIT_FAILURE);
+	}
 	if (globals->head == NULL && globals->len > 1)
 	{
 		free(globals->buf);
@@ -98,12 +105,10 @@ void pop(stack_t **node, unsigned int ln)
 {
 	stack_t *temp, *store;
 
-	if (globals->head == NULL || node == NULL || *node == NULL)
+	if (globals->len == 0)
 	{
 		free(globals->buf);
 		fclose(globals->fp);
-		if (globals->len != 0)
-			free_all_nodes();
 		fprintf(stderr, "L%d: can't pop an empty stack\n", ln);
 		exit(EXIT_FAILURE);
 	}
@@ -113,20 +118,15 @@ void pop(stack_t **node, unsigned int ln)
 	{
 		while (temp->next != NULL)
 			temp = temp->next;
-
-		store = temp->prev;
-		store->next = NULL;
-	}
-	else
-	{
-		store = temp->prev;
-		if (store != NULL)
-			store->next = NULL;
-		else
-			temp->n = 0;
 	}
 
 	globals->len -= 1;
+	store = temp->prev;
+
+	if (globals->len > 0)
+		store->next = NULL;
+	globals->tail = store;
+	free(temp);
 	ln += 1;
 }
 
@@ -138,9 +138,10 @@ void pop(stack_t **node, unsigned int ln)
 void swap(stack_t **node, unsigned int ln)
 {
 	stack_t *temp = *node;
-	stack_t *tos, *swap;
+	stack_t *tos = globals->tail;
 
-	if (temp == NULL)
+
+	if (globals->len < 2)
 	{
 		free(globals->buf);
 		fclose(globals->fp);
@@ -152,23 +153,13 @@ void swap(stack_t **node, unsigned int ln)
 
 	while (temp->next != NULL)
 		temp = temp->next;
+	temp = temp->prev;
+	tos->next = tos->prev;
+	tos->prev = temp->prev;
+	temp->prev->next = tos;
+	temp->prev = tos;
+	temp->next = NULL;
 
-	tos = temp;
-	if (temp->prev == NULL || temp->prev->prev == NULL)
-	{
-		free(globals->buf);
-		fclose(globals->fp);
-		if (globals->len != 0)
-			free_all_nodes();
-		fprintf(stderr, "L%d: can't swap, stack too short\n", ln);
-		exit(EXIT_FAILURE);
-	}
-
-	swap = tos->prev->prev;
-	tos->prev->prev = temp;
-	tos->prev->next = NULL;
-	tos->next = temp->prev;
-	tos->prev = swap;
-
+	globals->tail = temp;
 	ln += 1;
 }

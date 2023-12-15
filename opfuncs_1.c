@@ -42,6 +42,8 @@ void pall(stack_t **node, unsigned int ln)
 {
 	stack_t *temp = *node;
 
+	if (head == NULL || *node == NULL)
+		return;
 	while (temp->next != NULL)
 		temp = temp->next;
 
@@ -63,7 +65,7 @@ void pint(stack_t **node, unsigned int ln)
 {
 	stack_t *temp = *node;
 
-	if (temp == NULL || !temp->n)
+	if (head == NULL || temp == NULL)
 	{
 		fprintf(stderr, "L%d: can't pint, stack empty\n", ln);
 		exit(EXIT_FAILURE);
@@ -87,7 +89,7 @@ void pop(stack_t **node, unsigned int ln)
 {
 	stack_t *temp, *store;
 
-	if (head == NULL || node == NULL || *node == NULL || !head->n || !(*node)->n)
+	if (head == NULL || node == NULL || *node == NULL)
 	{
 		fprintf(stderr, "L%d: can't pop an empty stack\n", ln);
 		exit(EXIT_FAILURE);
@@ -107,6 +109,8 @@ void pop(stack_t **node, unsigned int ln)
 		store = temp->prev;
 		if (store != NULL)
 			store->next = NULL;
+		else
+			temp->n = 0;
 	}
 
 	ln += 1;

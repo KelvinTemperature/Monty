@@ -1,4 +1,4 @@
-#Monty Interpreter
+# Monty Interpreter
 
 this is a mini interpreter for the Monty Language.
 it was built in order to have a deep understand of

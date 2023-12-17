@@ -104,7 +104,7 @@ void pint(stack_t **node, unsigned int ln)
 void pop(stack_t **node, unsigned int ln)
 {
 	stack_t *temp, *store;
-
+	
 	if (globals->len == 0)
 	{
 		free(globals->buf);
@@ -114,18 +114,25 @@ void pop(stack_t **node, unsigned int ln)
 	}
 
 	temp = *node;
-	if (temp->next != NULL)
+
+	if (temp == NULL && (globals->head == NULL))
 	{
-		while (temp->next != NULL)
-			temp = temp->next;
+		free(globals->buf);
+		fclose(globals->fp);
+		free_all_nodes();
+		fprintf(stderr, "L%d: can't pop an empty stack\n", ln);
+		exit(EXIT_FAILURE);
 	}
 
-	globals->len -= 1;
+	while (temp->next != NULL)
+		temp = temp->next;
+
 	store = temp->prev;
 
-	if (globals->len > 0)
+	if (store != NULL)
 		store->next = NULL;
 	globals->tail = store;
+	globals->len -= 1;
 	free(temp);
 	ln += 1;
 }
